@@ -1,0 +1,37 @@
+.model small
+.stack 100h
+.data
+.code
+main proc
+
+    mov cx, 5        ; Number of lines (outer loop counter)
+    mov bx, 1        ; Start line = 1
+
+L1:                  ; Outer loop label
+    push cx          ; Save outer counter
+    mov cx, bx       ; Inner loop runs BX times
+    mov dl, '1'      ; Start printing from '1'
+
+L2:                  ; Inner loop label
+    mov ah, 2        ; DOS function to display character
+    int 21h
+    inc dl            ; Move to next ASCII number (e.g., '2', '3', ...)
+    loop L2
+
+    ; Print new line (CR + LF)
+    mov dl, 13
+    mov ah, 2
+    int 21h
+    mov dl, 10
+    mov ah, 2
+    int 21h
+
+    inc bx            ; Next line increases by one number
+    pop cx            ; Restore outer counter
+    loop L1           ; Repeat outer loop
+
+    mov ah, 4Ch       ; Exit program
+    int 21h
+
+main endp
+end main
